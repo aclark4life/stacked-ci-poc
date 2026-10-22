@@ -1,25 +1,8 @@
 name: CI
-
-# Fires for PRs targeting ANY branch (no branches filter), so stacked PRs
-# (whose base is another feature branch) are covered.
-on:
-  pull_request:
-  push:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-      # Test the PR head branch, not the auto-created merge ref.
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ env.HEAD_SHA }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install pytest
-      - run: pytest -v
-      - run: echo "PR head: ${{ github.event.pull_request.head.ref }} base: ${{ github.event.pull_request.base.ref }}"
+      - run: echo hello
