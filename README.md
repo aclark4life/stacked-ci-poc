@@ -7,9 +7,9 @@ correctly for every PR in a stack. A 3-PR stack (`s1 -> main`, `s2 -> s1`,
 
 Docs: <https://stacked-ci-poc.readthedocs.io>
 
-- [How the stack is built](https://stacked-ci-poc.readthedocs.io/en/latest/stack/)
-- [CI rules for stacked PRs](https://stacked-ci-poc.readthedocs.io/en/latest/ci/)
-- [What GitHub fixes vs. what teams choose](https://stacked-ci-poc.readthedocs.io/en/latest/choices/)
+- [How the stack is built](https://stacked-ci-poc.readthedocs.io/en/latest/stack.html)
+- [CI rules for stacked PRs](https://stacked-ci-poc.readthedocs.io/en/latest/ci.html)
+- [What GitHub fixes vs. what teams choose](https://stacked-ci-poc.readthedocs.io/en/latest/choices.html)
 
 Key files: [`.github/workflows/ci.yml`](.github/workflows/ci.yml),
 [`.github/workflows/rebase-stack.yml`](.github/workflows/rebase-stack.yml).
