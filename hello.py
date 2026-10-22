@@ -13,3 +13,7 @@ def version() -> str:
 
 def farewell(name: str = "world") -> str:
     return f"goodbye, {name}!"
+
+
+def shout(text: str) -> str:
+    return text.upper()
