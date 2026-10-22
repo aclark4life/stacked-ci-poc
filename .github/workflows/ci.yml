@@ -23,7 +23,11 @@ jobs:
           python-version: "3.12"
       - run: pip install pytest
       - run: pytest -q
-      - run: echo "fast: head=${{ github.event.pull_request.head.ref }} base=${{ github.event.pull_request.base.ref }} sha=${{ env.HEAD_SHA }}"
+      - run: echo "fast head=$HEAD_REF base=$BASE_REF sha=$HEAD_SHA"
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_SHA: ${{ env.HEAD_SHA }}
 
   full:
     if: github.event_name == 'push'
@@ -40,4 +44,6 @@ jobs:
       - run: |
           sleep 30
           pytest -q
-      - run: echo "full: branch=${{ github.ref_name }}"
+      - run: echo "full branch=$BRANCH"
+        env:
+          BRANCH: ${{ github.ref_name }}
