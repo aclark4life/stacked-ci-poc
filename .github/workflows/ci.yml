@@ -1,11 +1,32 @@
 name: CI
+
+# Tiered CI for stacked PRs:
+#   fast — every PR and every push (cheap; gates each stacked PR)
+#   full — only pushes to main or integration/** (expensive; authoritative)
 on:
-  pull_request:
+  pull_request: # no branches filter: stacked PRs target feature branches
   push:
-    branches: [main]
+    branches: [main, "integration/**"]
 
 jobs:
-  test:
+  fast:
+    runs-on: ubuntu-latest
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      # Test the PR head branch, not GitHub's auto-created merge ref.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.HEAD_SHA }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: pytest -q
+      - run: echo "fast: head=${{ github.event.pull_request.head.ref }} base=${{ github.event.pull_request.base.ref }} sha=${{ env.HEAD_SHA }}"
+
+  full:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,4 +34,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pytest
-      - run: pytest -v
+      - run: pytest -q
+      # Stand-in for an expensive check (e.g. functional tests against a
+      # real MongoDB server, as needed by the mlflow-mongodb stack).
+      - run: |
+          sleep 30
+          pytest -q
+      - run: echo "full: branch=${{ github.ref_name }}"
