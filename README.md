@@ -3,7 +3,8 @@
 Proof of concept: GitHub native **stacked pull requests** plus CI that runs
 correctly for every PR in a stack. A 3-PR stack (`s1 -> main`, `s2 -> s1`,
 `s3 -> s2`) with a tiered workflow: a cheap `fast` job gates every PR, a
-`full` job runs only on `main`/`integration/**` pushes.
+`full` job runs only on `main` and `integration/**` pushes (the rollup branch
+`integration/hello-stack` holds the whole stack).
 
 Docs: <https://stacked-ci-poc.readthedocs.io>
 
