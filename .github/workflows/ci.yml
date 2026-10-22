@@ -1,17 +1,22 @@
 name: CI
+
+# Fires for PRs targeting ANY branch (no branches filter), so stacked PRs
+# (whose base is another feature branch) are covered.
 on:
-  pull_request: # no branches filter: fires for PRs targeting non-default branches (stacked PRs)
+  pull_request:
   push:
     branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
+      # Test the PR head branch, not the auto-created merge ref.
       - uses: actions/checkout@v4
         with:
-          # Test the PR head branch, not the auto-created merge ref.
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ env.HEAD_SHA }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
