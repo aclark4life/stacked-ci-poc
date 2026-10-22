@@ -8,3 +8,7 @@ def test_greet():
 
 def test_farewell():
     assert farewell() == "goodbye, world!"
+
+
+def test_greet_shout():
+    assert greet().upper() == "HELLO, WORLD!"
